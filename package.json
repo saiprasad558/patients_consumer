@@ -1,5 +1,5 @@
 {
-  "name": "observations_consumer",
+  "name": "patients_consumer",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "gcloud:build": "gcloud builds submit --tag gcr.io/$PROJECT_ID/observations-consumer"
+    "gcloud:build": "gcloud builds submit --tag gcr.io/$PROJECT_ID/patients-consumer"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "kafkajs": "^2.2.4",
+    "moment": "^2.29.4",
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",

@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Kafka } from 'kafkajs';
 import { Repository } from 'typeorm';
-import { Patients } from './entities/patient.entity';
+import { Patient } from './entities/patient.entity';
 
 @Injectable()
 export class AppService {
@@ -11,8 +11,8 @@ export class AppService {
 
   constructor(
     private readonly configService: ConfigService,
-    @InjectRepository(Patients)
-    private readonly patientsRepository: Repository<Patients>,
+    @InjectRepository(Patient)
+    private readonly patientsRepository: Repository<Patient>,
   ) {
     this.kafka = new Kafka({
       clientId: configService.get<string>('kafka.clientId'),
@@ -21,9 +21,7 @@ export class AppService {
   }
 
   async ingestData() {
-    await Promise.all([
-      this.ingestPatients(),
-    ]);
+    await Promise.all([this.ingestPatients()]);
     console.log('Data ingestion successful');
   }
   private async ingestPatients() {
@@ -43,7 +41,7 @@ export class AppService {
       eachMessage: async ({ message }) => {
         const [operation, id] = message.key.toString().split('#');
         const value = JSON.parse(message.value.toString());
-        const patients = Patients.fromJSON(value);
+        const patients = Patient.fromJSON(value);
         if (operation === 'create') {
           await this.patientsRepository.save(patients);
         } else if (operation === 'update') {

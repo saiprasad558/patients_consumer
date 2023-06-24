@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import configuration from './config/configuration';
-import { Patients } from './entities/patient.entity';
+import { Patient } from './entities/patient.entity';
 import { AppService } from './app.service';
 
 @Module({
@@ -27,7 +27,7 @@ import { AppService } from './app.service';
       },
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([Patients]),
+    TypeOrmModule.forFeature([Patient]),
     ClientsModule.registerAsync([
       {
         name: 'PATIENTS_CONSUMER',
