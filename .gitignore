@@ -40,3 +40,6 @@ lerna-debug.log*
 
 # db
 /postgres-data
+
+# secrets
+k8s/secret*

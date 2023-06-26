@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patients-consumer-deployment
+  labels:
+    app: patients-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patients-consumer
+  template:
+    metadata:
+      labels:
+        app: patients-consumer
+    spec:
+      containers:
+        - name: patients-consumer
+          image: patients-consumer-image:latest
+          ports:
+            - containerPort: 8088
+          env:
+            - name: KAFKA
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-secret
+                  key: kafka-url
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-secret
+                  key: pg-password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-secret
+                  key: pg-user
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-secret
+                  key: pg-db
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-secret
+                  key: pg-host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-secret
+                  key: pg-port
