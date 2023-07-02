@@ -41,14 +41,20 @@ export class AppService {
       eachMessage: async ({ message }) => {
         const [operation, id] = message.key.toString().split('#');
         const value = JSON.parse(message.value.toString());
-        const patients = Patient.fromJSON(value);
+        const patient = Patient.fromJSON(value);
+        const data: Record<string, Patient> = {};
         if (operation === 'create') {
-          await this.patientsRepository.save(patients);
+          data[id] = patient;
         } else if (operation === 'update') {
-          await this.patientsRepository.update(id, patients);
+          data[id] = {
+            ...data[id],
+            ...patient,
+          };
         } else if (operation === 'delete') {
-          await this.patientsRepository.delete(id);
+          delete data[id];
         }
+
+        await this.patientsRepository.save(Object.values(data));
       },
     });
 
